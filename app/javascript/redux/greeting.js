@@ -1,30 +1,33 @@
 import axios from "axios"
 
-const FETCH_GREETINGS = 'hello-rails-react/greetings/FETCH_GREETINGS'
+const FETCH_GREETING_SUCCESS = 'FETCH_GREETING_SUCCESS';
 
-const getGreetings = (payload) => ({
-  type: FETCH_GREETINGS,
-  payload,
-})
+const getGreeting = (greeting) => ({
+  type: FETCH_GREETING_SUCCESS,
+  payload: greeting,
+});
 
-
-const initialState = {
-    greetings: []
-}
-
-export const fetchGreetingsFromApi = () => async (dispatch) => {
-    const res = await axios.get('/api/v1/greetings');
-    const data = res.data.greetings
-    dispatch(getGreetings(data));
-  };
-
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case FETCH_GREETINGS:
-      return action.payload;
-    default:
-      return state;
-  }
+const greetingState = {
+  greeting: '',
 };
 
-export default reducer
+export const reducer = (state = greetingState,
+  { type, payload }) => {
+    switch (type) {
+      case FETCH_GREETING_SUCCESS:
+        return {
+          ...state,
+          greeting: payload,
+        };
+      default:
+        return state;
+    };
+};
+
+const fetchGreetings = () => async (dispatch) => {
+  const result = await axios.get('/v1/messages');
+    const data = result.data.greetings
+    dispatch(getGreeting(data));
+};
+
+export default fetchGreetings;
