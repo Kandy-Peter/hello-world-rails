@@ -25,7 +25,7 @@ export const reducer = (state = greetingState,
 };
 
 const fetchGreetings = () => async (dispatch) => {
-  const result = await axios.get('/v1/messages');
+  const result = await axios.get('/api/v1/greetings');
     const data = result.data.greetings
     dispatch(getGreeting(data));
 };
