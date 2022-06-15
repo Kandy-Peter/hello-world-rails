@@ -2,31 +2,25 @@ import axios from "axios"
 
 const FETCH_GREETING_SUCCESS = 'FETCH_GREETING_SUCCESS';
 
-const getGreeting = (greeting) => ({
+const getGreeting = (payload) => ({
   type: FETCH_GREETING_SUCCESS,
-  payload: greeting,
+  payload
 });
 
-const greetingState = {
-  greeting: '',
-};
+const initialState = []
 
-export const reducer = (state = greetingState,
-  { type, payload }) => {
-    switch (type) {
+export const reducer = (state = initialState, action) => {
+    switch (action.type) {
       case FETCH_GREETING_SUCCESS:
-        return {
-          ...state,
-          greeting: payload,
-        };
+        return action.payload;
       default:
-        return state;
+          return state;
     };
 };
 
 const fetchGreetings = () => async (dispatch) => {
   const result = await axios.get('/api/v1/greetings');
-    const data = result.data.greetings
+    const data = result.data[0].text
     dispatch(getGreeting(data));
 };
 
